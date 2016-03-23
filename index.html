@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Test</title>
+	<link rel="stylesheet" href="f/css/main.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+</head>
+<body>
+	<div class="game">
+		<div class="map"></div>
+		<div class="info">
+			<div class="btn-mute" id="mute" title="Sound"></div>
+			<div class="info__row">
+				<div class="info__label">Time:</div>
+				<div class="info__value" id="time">
+					<span class="min">00</span>:<span class="sec">00</span>
+				</div>
+			</div>
+			<div class="info__row">
+				<div class="info__label">Kills:</div>
+				<div class="info__value" id="kills">0</div>
+			</div>
+			<div class="info__controls"></div>
+		</div>
+	<audio class="audio-hit">
+		<source src="f/sounds/hit.wav">
+	</audio>
+	<audio class="audio-bang">
+		<source src="f/sounds/bang.wav">
+	</audio>
+
+
+	<script src="f/js/html-redraw.js"></script>
+	<script src="f/js/game-components.js"></script>
+	<script src="f/js/game.js"></script>
+	<script src="f/js/app.js"></script>
+</body>
+</html>
