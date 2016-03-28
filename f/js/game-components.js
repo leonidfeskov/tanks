@@ -70,8 +70,13 @@ var Tank = function(position, offset, team){
 	// смещение указывает направление танка
 	this.offset = {
 		dx: offset.dx,
-		dy: offset.dy,
+		dy: offset.dy
 	};
+
+	this.isDrive = false; // танк стоит
+	this.driveTimer;
+	this.isRecharge = false; // перезарядка
+	this.rechargeTimer;
 };
 
 Tank.prototype.move = function(){
@@ -86,6 +91,11 @@ Tank.prototype.rotate = function(offset){
 	};
 };
 
+Tank.prototype.recharge = function(){
+	this.isRecharge = false;
+	clearTimeout(this.rechargeTimer);
+};
+
 // пуля
 var Shot = function(owner){
 	this.HTML = document.createElement('div');
@@ -95,7 +105,7 @@ var Shot = function(owner){
 		dx: owner.offset.dx,
 		dy: owner.offset.dy
 	};
-}
+};
 
 var AI = function(game, tank){
 	this.interval = setInterval(function(){
@@ -122,8 +132,8 @@ var AI = function(game, tank){
 		if (random == 4) {
 			game.fire(tank);
 		}
-	}, 400)
-}
+	}, 400);
+};
 
 var GameInfo = function(){
 	// timer
@@ -134,7 +144,7 @@ var GameInfo = function(){
 	var sec = 0;
 	var min = 0;
 	var timer = setInterval(function(){
-		sec++
+		sec++;
 		if (sec > 59) {
 			sec = 0;
 			min++;
@@ -145,12 +155,12 @@ var GameInfo = function(){
 
 	// kill counter
 	this.kills = 0;
-}
+};
 
 GameInfo.prototype.updateKills = function(){
 	var HTMLKills = document.getElementById('kills');
 	HTMLKills.innerHTML = this.kills;
-}
+};
 
 // вспомогательные функции
 // получаем направление движения по координатам смещения
@@ -171,10 +181,10 @@ var getDirection = function(offset){
 
 // получаем смещение в зависимости от нажатой кнопки
 var getOffsetKeyboard = function(keyCode){
-	if (keyCode == 38) return {dx: 0, dy: -1}; // up
-	if (keyCode == 40) return {dx: 0, dy: 1};  // down
-	if (keyCode == 37) return {dx: -1, dy: 0}; // left
-	if (keyCode == 39) return {dx: 1, dy: 0};  // right	
+	if (keyCode == 37 || keyCode == 65) return {dx: -1, dy: 0}; // left
+	if (keyCode == 38 || keyCode == 87) return {dx: 0, dy: -1}; // up
+	if (keyCode == 39 || keyCode == 68) return {dx: 1, dy: 0};  // right	
+	if (keyCode == 40 || keyCode == 83) return {dx: 0, dy: 1};  // down
 };
 
 // получаем x,y ячейки по координатам в px
@@ -184,55 +194,55 @@ var getBlockCoordinate = function(left, top){
 	block.y = Math.floor(top/cellSize);
 
 	return block;
-}
+};
 
-// возвращает true, если пуля попала в танк
-// direction - направление пули
-// shotPosition - текушие координаты пули
-// tankPosition - координаты танка, в которого стреляли
-var checkHitTank = function(direction, shotPosition, tankPosition){
+// возвращает true, если соседние 2 клетки свободны
+// direction - направление движения
+// currentPosition - координаты объекта, который перемещаем
+// newPosition - координаты, на которые хотим переместиться
+var checkSiblingCoord = function(direction, currentPosition, newPosition){
 	switch (direction){
 		case 'up':
-			if ((shotPosition.x == tankPosition.x   && shotPosition.y == tankPosition.y+1) ||
-				(shotPosition.x == tankPosition.x-1 && shotPosition.y == tankPosition.y+1) ||
-				(shotPosition.x == tankPosition.x+1 && shotPosition.y == tankPosition.y+1)) {
+			if ((currentPosition.x == newPosition.x   && currentPosition.y == newPosition.y+1) ||
+				(currentPosition.x == newPosition.x-1 && currentPosition.y == newPosition.y+1) ||
+				(currentPosition.x == newPosition.x+1 && currentPosition.y == newPosition.y+1)) {
 				return true;
 			}
 			break;
 		case 'down':
-			if ((shotPosition.x == tankPosition.x   && shotPosition.y == tankPosition.y) ||
-				(shotPosition.x == tankPosition.x-1 && shotPosition.y == tankPosition.y) ||
-				(shotPosition.x == tankPosition.x+1 && shotPosition.y == tankPosition.y)) {
+			if ((currentPosition.x == newPosition.x   && currentPosition.y == newPosition.y) ||
+				(currentPosition.x == newPosition.x-1 && currentPosition.y == newPosition.y) ||
+				(currentPosition.x == newPosition.x+1 && currentPosition.y == newPosition.y)) {
 				return true;
 			}
 			break;
 		case 'left':
-			if ((shotPosition.x == tankPosition.x+1 && shotPosition.y == tankPosition.y  ) ||
-				(shotPosition.x == tankPosition.x+1 && shotPosition.y == tankPosition.y-1) ||
-				(shotPosition.x == tankPosition.x+1 && shotPosition.y == tankPosition.y+1)) {
+			if ((currentPosition.x == newPosition.x+1 && currentPosition.y == newPosition.y  ) ||
+				(currentPosition.x == newPosition.x+1 && currentPosition.y == newPosition.y-1) ||
+				(currentPosition.x == newPosition.x+1 && currentPosition.y == newPosition.y+1)) {
 				return true;
 			}
 			break;
 		case 'right':
-			if ((shotPosition.x == tankPosition.x && shotPosition.y == tankPosition.y  ) ||
-				(shotPosition.x == tankPosition.x && shotPosition.y == tankPosition.y-1) ||
-				(shotPosition.x == tankPosition.x && shotPosition.y == tankPosition.y+1)) {
+			if ((currentPosition.x == newPosition.x && currentPosition.y == newPosition.y  ) ||
+				(currentPosition.x == newPosition.x && currentPosition.y == newPosition.y-1) ||
+				(currentPosition.x == newPosition.x && currentPosition.y == newPosition.y+1)) {
 				return true;
 			}
 			break;
 	}
 	return false;
-}
+};
 
 // проверяем хочет ли игрок переместиться или просто повернуть танк в другую сторону
 var checkTankRotate = function(oldOffset, newOffset) {
 	if (oldOffset.dx == newOffset.dx && oldOffset.dy == newOffset.dy) return false;
 	return true;
-}
+};
 
 var getRandomInt = function(min, max){
 	return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+};
 
 var getRandomDirection = function(){
 	var rnd = getRandomInt(1, 4);
@@ -240,4 +250,4 @@ var getRandomDirection = function(){
 	if (rnd == 2) return {dx: 0, dy: 1};  // down
 	if (rnd == 3) return {dx: -1, dy: 0}; // left
 	if (rnd == 4) return {dx: 1, dy: 0};  // right
-}
+};

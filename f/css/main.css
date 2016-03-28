@@ -67,6 +67,7 @@ html, body {
 
 .block {
 	background: repeat 0 0;
+	background-size: cover;
 	width: 30px;
 	height: 30px;
 	float: left;
@@ -74,23 +75,23 @@ html, body {
 }
 
 .block_brick {
-	background-color: orange;
-	background-image: url("../i/cell-brick.png");
+	background-color: #9c4a00;
+	background-image: url("../i/block-brick.svg");
 }
 
 .block_block {
 	background-color: white;
-	background-image: url("../i/cell-block.png");
+	background-image: url("../i/block-block.svg");
 }
 
 .block_grass {
-	background-image: url("../i/cell-grass.png");
+	background-image: url("../i/block-grass.svg");
 	z-index: 2;
 }
 
 .block_water {
 	background-color: blue;
-	background-image: url("../i/cell-water.png");
+	background-image: url("../i/block-water.svg");
 }
 
 .base {

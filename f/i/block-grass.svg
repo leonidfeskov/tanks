@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 8 8" enable-background="new 0 0 8 8" xml:space="preserve">
+	<rect width="5" height="1" x="1" y="0" fill="#005208" />
+	<rect width="1" height="1" x="6" y="0" fill="#8cd600" />
+
+	<rect width="3" height="1" x="0" y="1" fill="#005208" />
+	<rect width="1" height="1" x="3" y="1" fill="#8cd600" />
+	<rect width="1" height="1" x="4" y="1" fill="#005208" />
+	<rect width="1" height="1" x="5" y="1" fill="#8cd600" />
+	<rect width="1" height="1" x="6" y="1" fill="#005208" />
+	<rect width="1" height="1" x="7" y="1" fill="#8cd600" />
+
+	<rect width="5" height="1" x="0" y="2" fill="#005208" />
+	<rect width="3" height="1" x="5" y="2" fill="#8cd600" />
+
+	<rect width="3" height="1" x="0" y="3" fill="#005208" />
+	<rect width="2" height="1" x="3" y="3" fill="#8cd600" />
+	<rect width="2" height="1" x="5" y="3" fill="#005208" />
+	<rect width="1" height="1" x="7" y="3" fill="#8cd600" />
+
+	<rect width="2" height="1" x="0" y="4" fill="#005208" />
+	<rect width="1" height="1" x="2" y="4" fill="#8cd600" />
+	<rect width="1" height="1" x="3" y="4" fill="#005208" />
+	<rect width="3" height="1" x="4" y="4" fill="#8cd600" />
+	<rect width="1" height="1" x="7" y="4" fill="#005208" />
+
+	<rect width="3" height="1" x="0" y="5" fill="#005208" />
+	<rect width="5" height="1" x="3" y="5" fill="#8cd600" />
+	
+	<rect width="5" height="1" x="0" y="6" fill="#8cd600" />
+	<rect width="1" height="1" x="5" y="6" fill="#005208" />
+	<rect width="2" height="1" x="6" y="6" fill="#8cd600" />
+
+	<rect width="2" height="1" x="1" y="7" fill="#8cd600" />
+	<rect width="1" height="1" x="3" y="7" fill="#005208" />
+	<rect width="3" height="1" x="4" y="7" fill="#8cd600" />
+</svg>
