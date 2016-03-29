@@ -1,6 +1,6 @@
 var Game = function(map, base, playersRespawn, enemiesRespawn) {
 	this.settings = {
-		mute: true
+		mute: false
 	};
 	this.base = base;
 	this.playersRespawn = playersRespawn;
@@ -26,11 +26,7 @@ Game.prototype.init = function(map){
 	alert('Start!');
 	this.createPlayers();
 	this.createEnemies();
-
-	// массив всех пуль на карте
-	this.shots = {};
-	this.shotCount = 0;
-};
+}
 
 Game.prototype.createPlayers = function(){
 	// создаем игроков
@@ -116,8 +112,6 @@ Game.prototype.KeyboardEvent = function(player, keyLeft, keyUp, keyRight, keyDow
 Game.prototype.fire = function(tank){
 	var self = this;
 	var shot = new Shot(tank);
-	//this.shotCount++;
-	//this.shots[this.shotCount] = shot;
 	this.HTMLredraw.drawShot(shot);
 
 	var interval = setInterval(function(){
@@ -247,7 +241,7 @@ Game.prototype.checkHit = function(shot){
 		return true;
 	}
 
-	// пуля попала в другую пулю
+	// пуля попала в другую пулю (пока не работает)
 	/*if (this.isHitShot(shot, blockCoord1)) {
 		return true;
 	}*/
@@ -323,7 +317,7 @@ Game.prototype.isHitBlock = function(shot, blockCoord1, blockCoord2){
 	return false;
 };
 
-Game.prototype.isHitShot = function(shot, blockCoord){
+/*Game.prototype.isHitShot = function(shot, blockCoord){
 	if (shot.owner.team == 'player') {
 		for (var i in this.shots) {
 			var style = getComputedStyle(this.shots[i].HTML);
@@ -341,7 +335,7 @@ Game.prototype.isHitShot = function(shot, blockCoord){
 		}
 	}
 	return false;
-}
+};*/
 
 Game.prototype.destroyBase = function(block1, block2){
 	if (block1.name == 'base' || block2.name == 'base') {
