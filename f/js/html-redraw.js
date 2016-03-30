@@ -37,6 +37,10 @@ HTMLredraw.prototype.drawTank = function(tank){
 	this.updateTankRotate(tank);
 };
 
+HTMLredraw.prototype.updateTankGrade = function(tank){
+	tank.HTML.className = 'tank tank_' + tank.team + ' tank_v' + tank.grade + ' tank_'+ getDirection(tank.offset);
+};
+
 // перемещаем танк
 HTMLredraw.prototype.updateTankPosition = function(tank){
 	tank.HTML.style.left = tank.position.x * this.cellSize + 'px';
@@ -45,7 +49,7 @@ HTMLredraw.prototype.updateTankPosition = function(tank){
 
 // поворачиваем танк
 HTMLredraw.prototype.updateTankRotate = function(tank){
-	tank.HTML.className = 'tank tank_' + tank.team + ' tank_'+ getDirection(tank.offset);
+	tank.HTML.className = 'tank tank_' + tank.team + ' tank_v' + tank.grade + ' tank_'+ getDirection(tank.offset);
 };
 
 // стираем танк

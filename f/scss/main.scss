@@ -1,0 +1,183 @@
+$cell: 32px;
+
+
+html, body {
+	margin: 0;
+	background-color: #000;
+	font: 16px/1.2 Arial, sans-serif;
+}
+
+.game {
+	width: 1100px;
+	overflow: hidden;
+	margin: 0 auto;
+}
+
+.map {
+	background-color: #000;
+	width: $cell*26;
+	height: $cell*26;
+	overflow: hidden;
+	position: relative;
+	float: left;
+	border: 5px solid #fff;
+}
+
+.info {
+	background-color: #000;
+	color: #fff;
+	float: left;
+	border: 5px solid #fff;
+	border-left: medium none;
+	width: 240px;
+	height: $cell*26;
+	font-size: 14px;
+
+	&__padding {
+		box-sizing: border-box;
+		padding: 20px;
+		height: 100%;
+		position: relative;
+	}
+
+	&__row {
+		margin-bottom: 20px;
+	}
+
+	&__value {
+		font-size: 40px;
+	}
+
+	&__controls {
+		background: url("../i/controls.png") no-repeat 50% 0;
+		width: 100%;
+		height: 150px;
+		position: absolute;
+		left: 0;
+		bottom: 20px;
+	}
+}
+
+.btn-mute {
+	background: url("../i/btn-mute.png") no-repeat 0 0;
+	width: 50px;
+	height: 50px;
+	position: absolute;
+	right: 0;
+	top: 0;
+	cursor: pointer;
+
+	&.disable {
+		background-position: 0 -50px;
+	}
+}
+
+
+.block {
+	background: repeat 0 0;
+	background-size: cover;
+	width: $cell;
+	height: $cell;
+	float: left;
+	position: relative;
+
+	&_brick {
+		background-color: #9c4a00;
+		background-image: url("../i/block-brick.svg");
+	}
+
+	&_block {
+		background-color: white;
+		background-image: url("../i/block-block.svg");
+	}
+
+	&_grass {
+		background-image: url("../i/block-grass.svg");
+		z-index: 2;
+	}
+
+	&_water {
+		background-color: blue;
+		background-image: url("../i/block-water.svg");
+	}
+}
+
+.base {
+	background: url("../i/cell-base.png") no-repeat 0 0;
+	position: absolute;
+	width: $cell*2;
+	height: $cell*2;
+	z-index: 10;
+}
+
+.tank {
+	background: url("../i/tanks.png") no-repeat 0 0;
+	background-size: 800% auto;
+	width: $cell*2;
+	height: $cell*2;
+	position: absolute;
+	z-index: 1;
+	transition: left 0.2s linear 0s, top 0.2s linear 0s;
+
+	&_player {
+		background-position: 0 0;
+
+		@for $i from 1 through 8 {
+			&.tank_v#{$i} {background-position: 0 -64px*($i - 1);}
+		}
+	}
+
+	&_enemy {
+		background-position: -256px 0;
+		transition-duration: 0.4s;
+
+		@for $i from 1 through 8 {
+			&.tank_v#{$i} {background-position: -256px -64px*($i - 1);}
+		}
+	}
+}
+
+.bang {
+	background: url("../i/bang.png") no-repeat 0 0;
+	background-size: cover;
+	width: $cell;
+	height: $cell;
+	position: absolute;
+	z-index: 10;
+	opacity: 1;
+}
+
+.tank_down {
+	transform: rotate(180deg);
+}
+
+.tank_right {
+	transform: rotate(90deg);
+}
+
+.tank_left {
+	transform: rotate(270deg);
+}
+
+.shot {
+	background-color: #bcbcbc;
+	width: 8px;
+	height: 8px;
+	border-radius: 1px;
+	position: absolute;
+	left: 0;
+	top: 0;
+	margin: -8px 0 0 26px;
+}
+
+.shot_down {
+	margin: 60px 0 0 26px;
+}
+
+.shot_left {
+	margin: 26px 0 0 -8px;
+}
+
+.shot_right {
+	margin: 26px 0 0 60px;
+}

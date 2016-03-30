@@ -1,19 +1,24 @@
-var Game = function(map, base, playersRespawn, enemiesRespawn) {
+var Game = function(aMap, oBase, oPlayers, oEnemies) {
 	this.settings = {
-		mute: false
+		mute: true
 	};
-	this.base = base;
-	this.playersRespawn = playersRespawn;
-	this.enemiesRespawn = enemiesRespawn;
+	this.base = {
+		position: oBase.position
+	};
+	this.playersRespawn = oPlayers.respawn;
+	this.enemiesRespawn = oEnemies.respawn;
+	this.enemiesCount = 0;
+	this.enemiesKills = 0;
+	this.enemiesGrade = oEnemies.grade;
 
-	this.init(map);
+	this.init(aMap);
 };
 
-Game.prototype.init = function(map){
+Game.prototype.init = function(aMap){
 	this.info = new GameInfo();
 
 	// создаем обект карты
-	this.map = new Map(map);
+	this.map = new Map(aMap);
 
 	// объект отвечает за перерисовку карты
 	this.HTMLredraw = new HTMLredraw(this.map, this.settings);
@@ -21,20 +26,26 @@ Game.prototype.init = function(map){
 	// рисуем карту
 	this.HTMLredraw.drawMap();
 	// рисуем бaзу
-	this.HTMLredraw.drawBase(this.base);
+	this.HTMLredraw.drawBase(this.base.position);
 
-	alert('Start!');
+	this.players = [];
+	this.enemies = [];
+	this.ai = [];
+
+	//alert('Start!');
 	this.createPlayers();
 	this.createEnemies();
-}
+};
 
 Game.prototype.createPlayers = function(){
 	// создаем игроков
-	this.players = [];
 	for (var i = 0; i < this.playersRespawn.length; i++) {
-		var player = new Tank(this.playersRespawn[i], {dx:0, dy:-1}, 'player');
-		this.HTMLredraw.drawTank(player);
+		var player = new Tank('player', 1);
+		player.position.x = this.playersRespawn[i].x;
+		player.position.y = this.playersRespawn[i].y;
+		player.offset = {dx:0, dy:-1};
 		this.players.push(player);
+		this.HTMLredraw.drawTank(player);
 	}
 
 	// назначаем клавиши управления игрокам
@@ -44,23 +55,25 @@ Game.prototype.createPlayers = function(){
 
 Game.prototype.createEnemies = function(){
 	// создаем танки-враги
-	this.enemies = [];
-	this.ai = [];
 	for (var i = 0; i < this.enemiesRespawn.length; i++) {
-		var enemyTank = new Tank(this.enemiesRespawn[i], {dx: 0, dy: 1}, 'enemy');
+		var enemyTank = new Tank('enemy', this.enemiesGrade[this.enemiesCount++]);
+		enemyTank.position.x = this.enemiesRespawn[i].x;
+		enemyTank.position.y = this.enemiesRespawn[i].y;
 		var enemyAi = new AI(this, enemyTank);
-		this.HTMLredraw.drawTank(enemyTank);
 		this.enemies.push(enemyTank);
 		this.ai.push(enemyAi);
+		this.HTMLredraw.drawTank(enemyTank);
 	}
 };
 
-Game.prototype.respawnTank = function(i){
+Game.prototype.respawnTank = function(){
 	var randowPosition = getRandomInt(0, this.enemiesRespawn.length-1);
-	var enemyTank = new Tank(this.enemiesRespawn[randowPosition], {dx: 0, dy: 1}, 'enemy');
-	this.enemies[i] = enemyTank;
-	this.HTMLredraw.drawTank(this.enemies[i]);
-	this.ai[i] = new AI(this, this.enemies[i]);
+	var enemyTank = new Tank('enemy', this.enemiesGrade[this.enemiesCount++]);
+	enemyTank.position.x = this.enemiesRespawn[randowPosition].x;
+	enemyTank.position.y = this.enemiesRespawn[randowPosition].y;
+	this.enemies.push(enemyTank);
+	this.ai.push(new AI(this, enemyTank));
+	this.HTMLredraw.drawTank(enemyTank);
 };
 
 // события клавиатуры
@@ -254,19 +267,27 @@ Game.prototype.isHitEnemy = function(shot, blockCoord){
 		for (var i = 0; i < this.enemies.length; i++) {
 
 			if (this.enemies[i] && checkSiblingCoord(getDirection(shot.offset), blockCoord, this.enemies[i].position)) {
+				// отнимаем одну жизнь
+				this.enemies[i].heals--;
+
 				// уничтожаем танк
-				if (this.ai[i]) clearInterval(this.ai[i].interval);
-				this.HTMLredraw.destroyTank(this.enemies[i]);
-				delete this.enemies[i];
-				delete this.ai[i];
+				if (this.enemies[i].heals <= 0) {
+					if (this.ai[i]) clearInterval(this.ai[i].interval);
+					this.HTMLredraw.destroyTank(this.enemies[i]);
+					this.enemies.splice(i, 1);
+					this.ai.splice(i, 1);
 
-				// защитываем +1 к убийствам
-				this.info.kills++;
-				this.info.updateKills();
+					// защитываем +1 к убийствам
+					this.info.updateKills(++this.enemiesKills);
 
-				// респавним новый вражеский танк
-				this.respawnTank(i);
-				
+					if (this.enemiesKills >= this.enemiesCount) {
+						this.gameWin();
+					}
+					// респавним новый вражеский танк
+					if (this.enemiesCount < this.enemiesGrade.length) {
+						this.respawnTank();
+					}
+				}
 				return true;
 			}
 		}
@@ -341,10 +362,15 @@ Game.prototype.destroyBase = function(block1, block2){
 	if (block1.name == 'base' || block2.name == 'base') {
 		this.gameover();
 	}
-}
+};
 
 Game.prototype.gameover = function(){
 	alert('Game over!');
+	location.reload();
+};
+
+Game.prototype.gameWin = function(){
+	alert('Game win!');
 	location.reload();
 };
 

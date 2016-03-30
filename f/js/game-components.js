@@ -1,6 +1,5 @@
 // один блок на карте
 var Block = function(type){
-	this.type = type;
 	this.name = 'empty';
 	this.isPervious = false;
 	this.isDestroy = false;
@@ -36,17 +35,18 @@ var Block = function(type){
 };
 
 var Map = function(map){
-	this.width = this.height = map.length;
+	this.height = map.length;
+	this.width = map[0].length;
 	this.blocks = [];
-	for (var y = 0; y < map.length; y++) {
+	for (var y = 0; y < this.height; y++) {
 		var row = [];
-		for (var x = 0; x < map.length; x++) {
+		for (var x = 0; x < this.width; x++) {
 			var block = new Block(map[y][x]);
 			row.push(block);
 		}
 		this.blocks.push(row);
 	}
-	this.cellSize = 30;
+	this.cellSize = cellSize;
 };
 
 Map.prototype.createBlock = function(x, y, type){
@@ -58,25 +58,89 @@ Map.prototype.removeBlock = function(x, y){
 };
 
 // Танк
-var Tank = function(position, offset, team){
+var Tank = function(team, grade){
 	this.team = team;
+	this.grade = grade;
+	this.heals = 1;
+	this.speed = 1;
+	this.shotSpeed = 1;
 	this.HTML = document.createElement('div');
-	this.HTML.className = 'tank tank_' + team;
+	this.HTML.className = 'tank tank_' + team + ' tank_v' + grade;
 	//  координаты танка на карте
 	this.position = {
-		x: position.x,
-		y: position.y
+		x: 0,
+		y: 0
 	};
 	// смещение указывает направление танка
 	this.offset = {
-		dx: offset.dx,
-		dy: offset.dy
+		dx: 0,
+		dy: 1
 	};
 
 	this.isDrive = false; // танк стоит
-	this.driveTimer;
+	this.driveTimer = null;
 	this.isRecharge = false; // перезарядка
-	this.rechargeTimer;
+	this.rechargeTimer = null;
+
+	this.upgrade(grade);
+};
+
+Tank.prototype.upgrade = function(grade){
+	this.grade = grade;
+	switch (grade) {
+		case 1:
+			this.heals = 1;
+			this.speed = 1;
+			this.speedShot = 1;
+			break;
+		case 2:
+			this.heals = 1;
+			this.speed = 2;
+			this.speedShot = 1;
+			break;
+		case 3:
+			this.heals = 2;
+			this.speed = 1;
+			this.speedShot = 1;
+			break;
+		case 4:
+			this.heals = 2;
+			this.speed = 2;
+			this.speedShot = 1;
+			break;
+		case 5:
+			this.heals = 3;
+			this.speed = 1;
+			this.speedShot = 2;
+			break;
+		case 6:
+			this.heals = 3;
+			this.speed = 2;
+			this.speedShot = 2;
+			break;
+		case 7:
+			this.heals = 4;
+			this.speed = 1;
+			this.speedShot = 2;
+			break;
+		case 8:
+			this.heals = 4;
+			this.speed = 2;
+			this.speedShot = 2;
+			break;
+		default:
+			break;
+	}
+};
+
+Tank.prototype.lvlUp = function(){
+	if (this.grade < 8) {
+		this.upgrade(this.grade++);
+	}
+};
+
+Tank.prototype.lvlReset = function(){
+	this.upgrade(1);
 };
 
 Tank.prototype.move = function(){
@@ -130,7 +194,7 @@ var AI = function(game, tank){
 		}
 		// танк стреляет
 		if (random == 4) {
-			game.fire(tank);
+			//game.fire(tank);
 		}
 	}, 400);
 };
@@ -152,29 +216,26 @@ var GameInfo = function(){
 		HTMLTimeSec.innerHTML = sec < 10 ? '0'+sec : sec;
 		HTMLTimeMin.innerHTML = min < 10 ? '0'+min : min;
 	}, 1000);
-
-	// kill counter
-	this.kills = 0;
 };
 
-GameInfo.prototype.updateKills = function(){
+GameInfo.prototype.updateKills = function(kills){
 	var HTMLKills = document.getElementById('kills');
-	HTMLKills.innerHTML = this.kills;
+	HTMLKills.innerHTML = kills;
 };
 
 // вспомогательные функции
 // получаем направление движения по координатам смещения
 var getDirection = function(offset){
-	if (offset.dx == 0 && offset.dy == -1) {
+	if (offset.dx === 0 && offset.dy == -1) {
 		return 'up';
 	}
-	if (offset.dx == 0 && offset.dy == 1) {
+	if (offset.dx === 0 && offset.dy == 1) {
 		return 'down';
 	}
-	if (offset.dx == -1 && offset.dy == 0) {
+	if (offset.dx == -1 && offset.dy === 0) {
 		return 'left';
 	}
-	if (offset.dx == 1 && offset.dy == 0) {
+	if (offset.dx == 1 && offset.dy === 0) {
 		return 'right';
 	}
 };
