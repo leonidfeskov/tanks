@@ -87,4 +87,5 @@ var cellSize = 32;
 			game.settings.mute = true;
 		}
 	});
+
 })();

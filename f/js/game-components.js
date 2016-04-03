@@ -312,3 +312,14 @@ var getRandomDirection = function(){
 	if (rnd == 3) return {dx: -1, dy: 0}; // left
 	if (rnd == 4) return {dx: 1, dy: 0};  // right
 };
+
+function addClass(o, c){
+	var re = new RegExp("(^|\\s)" + c + "(\\s|$)", "g")
+	if (re.test(o.className)) return
+	o.className = (o.className + " " + c).replace(/\s+/g, " ").replace(/(^ | $)/g, "")
+}
+
+function removeClass(o, c){
+	var re = new RegExp("(^|\\s)" + c + "(\\s|$)", "g")
+	o.className = o.className.replace(re, "$1").replace(/\s+/g, " ").replace(/(^ | $)/g, "")
+}

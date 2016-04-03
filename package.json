@@ -19,7 +19,10 @@
   "devDependencies": {
     "browser-sync": "^2.11.2",
     "gulp": "^3.9.1",
+    "gulp-jade": "^1.1.0",
     "gulp-sass": "^2.2.0",
-    "gulp-watch": "^4.3.5"
+    "gulp-svg-sprite": "^1.2.19",
+    "gulp-watch": "^4.3.5",
+    "jade": "^1.11.0"
   }
 }

@@ -1,0 +1,30 @@
+doctype html
+html
+	head
+		meta(charset='utf-8')
+		title Test
+		link(rel='stylesheet', href='../f/css/main.css')
+		meta(name='viewport', content='width=device-width, initial-scale=1.0, maximum-scale=1')
+	body
+		span(style="display: none;")
+			include ../f/i/symbol/svg/sprite.symbol.svg
+		.game
+			.map
+			.info
+				.info__padding
+					#mute.btn-mute(title='Sound')
+					.info__row
+						.info__label Time:
+						#time.info__value
+							span.min 00
+							| :
+							span.sec 00
+					.info__row
+						.info__label Kills:
+						#kills.info__value 0
+					.info__controls
+		script(src='../f/js/html-redraw.js')
+		script(src='../f/js/game-components.js')
+		script(src='../f/js/game.js')
+		script(src='../f/js/app.js')
+

@@ -45,6 +45,7 @@ HTMLredraw.prototype.updateTankGrade = function(tank){
 HTMLredraw.prototype.updateTankPosition = function(tank){
 	tank.HTML.style.left = tank.position.x * this.cellSize + 'px';
 	tank.HTML.style.top = tank.position.y * this.cellSize + 'px';
+
 };
 
 // поворачиваем танк
