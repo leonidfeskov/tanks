@@ -62,10 +62,10 @@ var Tank = function(team, grade){
 	this.team = team;
 	this.grade = grade;
 	this.heals = 1;
-	this.speed = 1;
+	this.speed = 400;
 	this.shotSpeed = 1;
 	this.HTML = document.createElement('div');
-	this.HTML.className = 'tank tank_' + team + ' tank_v' + grade;
+	this.HTML.className = 'tank tank_' + team + ' tank_grade-' + grade;
 	//  координаты танка на карте
 	this.position = {
 		x: 0,
@@ -90,42 +90,22 @@ Tank.prototype.upgrade = function(grade){
 	switch (grade) {
 		case 1:
 			this.heals = 1;
-			this.speed = 1;
+			this.speed = 400;
 			this.speedShot = 1;
 			break;
 		case 2:
 			this.heals = 1;
-			this.speed = 2;
+			this.speed = 200;
 			this.speedShot = 1;
 			break;
 		case 3:
-			this.heals = 2;
-			this.speed = 1;
-			this.speedShot = 1;
+			this.heals = 1;
+			this.speed = 400;
+			this.speedShot = 2;
 			break;
 		case 4:
 			this.heals = 2;
-			this.speed = 2;
-			this.speedShot = 1;
-			break;
-		case 5:
-			this.heals = 3;
-			this.speed = 1;
-			this.speedShot = 2;
-			break;
-		case 6:
-			this.heals = 3;
-			this.speed = 2;
-			this.speedShot = 2;
-			break;
-		case 7:
-			this.heals = 4;
-			this.speed = 1;
-			this.speedShot = 2;
-			break;
-		case 8:
-			this.heals = 4;
-			this.speed = 2;
+			this.speed = 200;
 			this.speedShot = 2;
 			break;
 		default:
@@ -134,8 +114,8 @@ Tank.prototype.upgrade = function(grade){
 };
 
 Tank.prototype.lvlUp = function(){
-	if (this.grade < 8) {
-		this.upgrade(this.grade++);
+	if (this.grade < 4) {
+		this.upgrade(++this.grade);
 	}
 };
 
@@ -149,6 +129,8 @@ Tank.prototype.move = function(){
 };
 
 Tank.prototype.rotate = function(offset){
+	if (this.isDrive) return;
+	
 	this.offset = {
 		dx: offset.dx,
 		dy: offset.dy
@@ -175,6 +157,7 @@ var AI = function(game, tank){
 	this.interval = setInterval(function(){
 		var isPervious = game.checkPervious(tank);
 		var random = getRandomInt(1, 10);
+
 		// танк просто стоит, думает о жизни
 		if (random == 1 || random == 2) {
 			return;
@@ -194,9 +177,20 @@ var AI = function(game, tank){
 		}
 		// танк стреляет
 		if (random == 4) {
-			//game.fire(tank);
+			game.fire(tank);
 		}
-	}, 400);
+	}, tank.speed);
+};
+
+var Bonus = function(name, position){
+	this.name = name;
+	this.position = {
+		x: position.x,
+		y: position.y
+	};
+	this.action = function(tank){
+		tank.lvlUp();
+	};
 };
 
 var GameInfo = function(){
@@ -218,8 +212,8 @@ var GameInfo = function(){
 	}, 1000);
 };
 
-GameInfo.prototype.updateKills = function(kills){
-	var HTMLKills = document.getElementById('kills');
+GameInfo.prototype.updateKills = function(kills, team){
+	var HTMLKills = document.getElementById('kills-'+team);
 	HTMLKills.innerHTML = kills;
 };
 
@@ -244,7 +238,7 @@ var getDirection = function(offset){
 var getOffsetKeyboard = function(keyCode){
 	if (keyCode == 37 || keyCode == 65) return {dx: -1, dy: 0}; // left
 	if (keyCode == 38 || keyCode == 87) return {dx: 0, dy: -1}; // up
-	if (keyCode == 39 || keyCode == 68) return {dx: 1, dy: 0};  // right	
+	if (keyCode == 39 || keyCode == 68) return {dx: 1, dy: 0};  // right
 	if (keyCode == 40 || keyCode == 83) return {dx: 0, dy: 1};  // down
 };
 

@@ -21,7 +21,7 @@ gulp.task('jade', function() {
 	.pipe(jade({
 		pretty: true
 	}))
-	.pipe(gulp.dest('html'))
+	.pipe(gulp.dest('html'));
 });
 
 gulp.task('svg-sprite', function(){
@@ -57,7 +57,7 @@ gulp.task('js', function() {
 gulp.task('watch', function(){
 	gulp.watch('f/scss/**/*.scss', ['sass']);
 	gulp.watch('jade/*.jade', ['jade']);
-	//gulp.watch('f/i/sprite-svg/*.svg', ['svg-sprite']);
+	gulp.watch('f/i/sprite-svg/*.svg', ['svg-sprite']);
 	gulp.watch('f/js/**/*.js', ['js']);
 });
 
@@ -70,6 +70,6 @@ gulp.task('browserSync', function(){
 	});
 });
 
-gulp.task('default', ['sass', 'jade', /*'svg-sprite', */'js', 'watch', 'browserSync'], function(){
+gulp.task('default', ['sass', 'jade', 'svg-sprite', 'js', 'watch', 'browserSync'], function(){
 	console.log('Building files');
 });

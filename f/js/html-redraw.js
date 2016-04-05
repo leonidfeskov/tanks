@@ -35,22 +35,23 @@ HTMLredraw.prototype.drawTank = function(tank){
 	this.updateTankPosition(tank);
 	// поворачиваем в заданную сторону
 	this.updateTankRotate(tank);
+	tank.HTML.style.transitionDuration = tank.speed + 'ms';
 };
 
 HTMLredraw.prototype.updateTankGrade = function(tank){
-	tank.HTML.className = 'tank tank_' + tank.team + ' tank_v' + tank.grade + ' tank_'+ getDirection(tank.offset);
+	tank.HTML.className = 'tank tank_' + tank.team + ' tank_grade-' + tank.grade + ' tank_'+ getDirection(tank.offset);
+	tank.HTML.style.transitionDuration = tank.speed + 'ms';
 };
 
 // перемещаем танк
 HTMLredraw.prototype.updateTankPosition = function(tank){
 	tank.HTML.style.left = tank.position.x * this.cellSize + 'px';
 	tank.HTML.style.top = tank.position.y * this.cellSize + 'px';
-
 };
 
 // поворачиваем танк
 HTMLredraw.prototype.updateTankRotate = function(tank){
-	tank.HTML.className = 'tank tank_' + tank.team + ' tank_v' + tank.grade + ' tank_'+ getDirection(tank.offset);
+	tank.HTML.className = 'tank tank_' + tank.team + ' tank_grade-' + tank.grade + ' tank_'+ getDirection(tank.offset);
 };
 
 // стираем танк
@@ -58,7 +59,7 @@ HTMLredraw.prototype.destroyTank = function(tank){
 	this.mapHTML.removeChild(tank.HTML);
 	this.drawBang(tank.position.x, tank.position.y);
 	this.audio('bangTank');
-}
+};
 
 // рисуем пулю
 HTMLredraw.prototype.drawShot = function(shot){
@@ -68,23 +69,23 @@ HTMLredraw.prototype.drawShot = function(shot){
 	
 	this.mapHTML.appendChild(HTML);
 	this.audio('hit');
-}
+};
 
 // перемещаем пулю
 HTMLredraw.prototype.updateShotPosition = function(shot){
 	var HTML = shot.HTML;
-	var speed = 15;
+	var speed = 5*shot.owner.speedShot;
 	var leftOld = parseInt(HTML.style.left);
 	var topOld = parseInt(HTML.style.top);
 
 	HTML.style.left = (leftOld + speed*shot.offset.dx) + 'px';
 	HTML.style.top = (topOld + speed*shot.offset.dy) + 'px';
-}
+};
 
 // стираем пулю
 HTMLredraw.prototype.destroyShot = function(shot){
 	this.mapHTML.removeChild(shot.HTML);
-}
+};
 
 // стираем блок на карте
 HTMLredraw.prototype.destroyBlock = function(x, y){
@@ -93,7 +94,7 @@ HTMLredraw.prototype.destroyBlock = function(x, y){
 	HTML.className = 'block';
 	this.drawBang(x, y);
 	this.audio('bang');
-}
+};
 
 HTMLredraw.prototype.drawBang = function(x, y){
 	var self = this;
@@ -110,8 +111,21 @@ HTMLredraw.prototype.drawBang = function(x, y){
 			self.mapHTML.removeChild(HTML);
 		}
 		HTML.style.opacity = opacity;
-	},100)
-}
+	},100);
+};
+
+HTMLredraw.prototype.drawBonus = function(bonus){
+	var HTML = document.createElement('div');
+	HTML.className = 'bonus bonus_' + bonus.name;
+	HTML.style.left = bonus.position.x * this.cellSize + 'px';
+	HTML.style.top = bonus.position.y * this.cellSize + 'px';
+	this.mapHTML.appendChild(HTML);
+};
+
+HTMLredraw.prototype.destroyBonus = function(bonus){
+	var bonus = document.querySelector('.bonus');
+	this.mapHTML.removeChild(bonus);
+};
 
 HTMLredraw.prototype.audio = function(sound){
 	if (!this.settings.mute) {
@@ -140,3 +154,4 @@ HTMLredraw.prototype.audio = function(sound){
 		}
 	}
 };
+

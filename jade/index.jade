@@ -6,7 +6,7 @@ html
 		link(rel='stylesheet', href='../f/css/main.css')
 		meta(name='viewport', content='width=device-width, initial-scale=1.0, maximum-scale=1')
 	body
-		span(style="display: none;")
+		//span(style="display: none;")
 			include ../f/i/symbol/svg/sprite.symbol.svg
 		.game
 			.map
@@ -20,8 +20,11 @@ html
 							| :
 							span.sec 00
 					.info__row
-						.info__label Kills:
-						#kills.info__value 0
+						.info__label Good Kills:
+						#kills-player.info__value 0
+					.info__row
+						.info__label Evil Kills:
+						#kills-enemy.info__value 0
 					.info__controls
 		script(src='../f/js/html-redraw.js')
 		script(src='../f/js/game-components.js')
