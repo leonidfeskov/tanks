@@ -83,27 +83,27 @@ html, body {
 
 	&_brick {
 		background-color: #9c4a00;
-		background-image: url("../i/block-brick.svg");
+		background-image: url("../i/blocks/block-brick.svg");
 	}
 
 	&_block {
 		background-color: white;
-		background-image: url("../i/block-block.svg");
+		background-image: url("../i/blocks/block-block.svg");
 	}
 
 	&_grass {
-		background-image: url("../i/block-grass.svg");
+		background-image: url("../i/blocks/block-grass.svg");
 		z-index: 2;
 	}
 
 	&_water {
 		background-color: blue;
-		background-image: url("../i/block-water.svg");
+		background-image: url("../i/blocks/block-water.svg");
 	}
 }
 
 .base {
-	background: url("../i/cell-base.png") no-repeat 0 0;
+	background: url("../i/blocks/block-base.png") no-repeat 0 0;
 	position: absolute;
 	width: $cell*2;
 	height: $cell*2;
@@ -111,6 +111,7 @@ html, body {
 }
 
 .tank {
+	background-image: url("../i/tanks/tank-gray-1.svg");
 	background: no-repeat 0 0;
 	background-size: cover;
 	position: absolute;
@@ -120,42 +121,29 @@ html, body {
 	transition: left 400ms linear 0s, top 400ms linear 0s;
 	font-size: 20px;
 	color: red;
-	
 
 	&_player {
-		background-image: url("../i/tank-yellow.svg");
-
-		&.tank_grade-2 {
-			background-image: url("../i/tank-yellow-2.svg");
-		}
-
-		&.tank_grade-3 {
-			background-image: url("../i/tank-yellow-3.svg");
-		}
-
-		&.tank_grade-4 {
-			background-image: url("../i/tank-yellow-4.svg");
+		@for $i from 1 through 4 {
+			&.tank_grade-#{$i} {
+				background-image: url("../i/tanks/tank-yellow-#{$i}.svg");
+			}
 		}
 	}
 
 	&_enemy {
-		background-image: url("../i/tank-green.svg");
-
-		&.tank_grade-2 {
-			background-image: url("../i/tank-green-2.svg");
-		}
-
-		&.tank_grade-3 {
-			background-image: url("../i/tank-green-3.svg");
-		}
-
-		&.tank_grade-4 {
-			background-image: url("../i/tank-green-4.svg");
+		@for $i from 1 through 4 {
+			&.tank_grade-#{$i} {
+				background-image: url("../i/tanks/tank-gray-#{$i}.svg");
+			}
 		}
 	}
 
 	&_enemy-red {
-		background-image: url("../i/tank-red.svg");
+		@for $i from 1 through 4 {
+			&.tank_grade-#{$i} {
+				background-image: url("../i/tanks/tank-red-#{$i}.svg");
+			}
+		}
 	}
 }
 

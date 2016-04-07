@@ -16,7 +16,7 @@ HTMLredraw.prototype.drawMap = function(){
 			this.mapHTML.appendChild(block);
 		}
 	}
-	//this.audio('fon');
+	this.audio('start');
 };
 
 // рисуем базу
@@ -130,11 +130,10 @@ HTMLredraw.prototype.destroyBonus = function(bonus){
 HTMLredraw.prototype.audio = function(sound){
 	if (!this.settings.mute) {
 		switch (sound) {
-			case 'fon':
-				/*var audioFon = document.createElement('audio');
-				audioFon.src = 'f/sounds/fon.wav';
-				audioFon.loop = true;
-				audioFon.play();*/
+			case 'start':
+				var audioStart = document.createElement('audio');
+				audioStart.src = 'f/sounds/start.mp3';
+				audioStart.play();
 				break;
 			case 'hit':
 				var audioHit = document.createElement('audio');

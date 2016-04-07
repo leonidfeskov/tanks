@@ -63,25 +63,26 @@ html, body {
   position: relative; }
   .block_brick {
     background-color: #9c4a00;
-    background-image: url("../i/block-brick.svg"); }
+    background-image: url("../i/blocks/block-brick.svg"); }
   .block_block {
     background-color: white;
-    background-image: url("../i/block-block.svg"); }
+    background-image: url("../i/blocks/block-block.svg"); }
   .block_grass {
-    background-image: url("../i/block-grass.svg");
+    background-image: url("../i/blocks/block-grass.svg");
     z-index: 2; }
   .block_water {
     background-color: blue;
-    background-image: url("../i/block-water.svg"); }
+    background-image: url("../i/blocks/block-water.svg"); }
 
 .base {
-  background: url("../i/cell-base.png") no-repeat 0 0;
+  background: url("../i/blocks/block-base.png") no-repeat 0 0;
   position: absolute;
   width: 64px;
   height: 64px;
   z-index: 10; }
 
 .tank {
+  background-image: url("../i/tanks/tank-gray-1.svg");
   background: no-repeat 0 0;
   background-size: cover;
   position: absolute;
@@ -91,24 +92,30 @@ html, body {
   transition: left 400ms linear 0s, top 400ms linear 0s;
   font-size: 20px;
   color: red; }
-  .tank_player {
-    background-image: url("../i/tank-yellow.svg"); }
-    .tank_player.tank_grade-2 {
-      background-image: url("../i/tank-yellow-2.svg"); }
-    .tank_player.tank_grade-3 {
-      background-image: url("../i/tank-yellow-3.svg"); }
-    .tank_player.tank_grade-4 {
-      background-image: url("../i/tank-yellow-4.svg"); }
-  .tank_enemy {
-    background-image: url("../i/tank-green.svg"); }
-    .tank_enemy.tank_grade-2 {
-      background-image: url("../i/tank-green-2.svg"); }
-    .tank_enemy.tank_grade-3 {
-      background-image: url("../i/tank-green-3.svg"); }
-    .tank_enemy.tank_grade-4 {
-      background-image: url("../i/tank-green-4.svg"); }
-  .tank_enemy-red {
-    background-image: url("../i/tank-red.svg"); }
+  .tank_player.tank_grade-1 {
+    background-image: url("../i/tanks/tank-yellow-1.svg"); }
+  .tank_player.tank_grade-2 {
+    background-image: url("../i/tanks/tank-yellow-2.svg"); }
+  .tank_player.tank_grade-3 {
+    background-image: url("../i/tanks/tank-yellow-3.svg"); }
+  .tank_player.tank_grade-4 {
+    background-image: url("../i/tanks/tank-yellow-4.svg"); }
+  .tank_enemy.tank_grade-1 {
+    background-image: url("../i/tanks/tank-gray-1.svg"); }
+  .tank_enemy.tank_grade-2 {
+    background-image: url("../i/tanks/tank-gray-2.svg"); }
+  .tank_enemy.tank_grade-3 {
+    background-image: url("../i/tanks/tank-gray-3.svg"); }
+  .tank_enemy.tank_grade-4 {
+    background-image: url("../i/tanks/tank-gray-4.svg"); }
+  .tank_enemy-red.tank_grade-1 {
+    background-image: url("../i/tanks/tank-red-1.svg"); }
+  .tank_enemy-red.tank_grade-2 {
+    background-image: url("../i/tanks/tank-red-2.svg"); }
+  .tank_enemy-red.tank_grade-3 {
+    background-image: url("../i/tanks/tank-red-3.svg"); }
+  .tank_enemy-red.tank_grade-4 {
+    background-image: url("../i/tanks/tank-red-4.svg"); }
 
 .bang {
   background: url("../i/bang.png") no-repeat 0 0;

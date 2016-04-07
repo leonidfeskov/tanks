@@ -129,8 +129,6 @@ Tank.prototype.move = function(){
 };
 
 Tank.prototype.rotate = function(offset){
-	if (this.isDrive) return;
-	
 	this.offset = {
 		dx: offset.dx,
 		dy: offset.dy
