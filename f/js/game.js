@@ -58,8 +58,8 @@ Game.prototype.createPlayers = function(){
 	}
 
 	// назначаем клавиши управления игрокам
-	if (this.players[0]) this.KeyboardEvent(this.players[0], 65, 87, 68, 83, 32);
-	//if (this.players[1]) this.KeyboardEvent(this.players[1], 37, 38, 39, 40, 96);
+	//if (this.players[0]) this.KeyboardEvent(this.players[0], 65, 87, 68, 83, 96);
+	if (this.players[0]) this.KeyboardEvent(this.players[0], 37, 38, 39, 40, 32);
 };
 
 Game.prototype.createEnemies = function(){
